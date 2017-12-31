@@ -11,11 +11,13 @@ function isAllowedUser($fb_id){
 }
 
 function getMessengerToken($fb_id){
+    global $messenger_token;
     //might be implemented in db also
-    return $messenger_tokens[$fb_id];
+    return $messenger_token;
 }
 
 function getMessengerURL(){
+    global $messenger_token;
     //possibility for access token update might be put here
     return 'https://graph.facebook.com/v2.6/me/messages?access_token='.$messenger_token;
 }
@@ -33,20 +35,12 @@ function generateJsonForMessenger($fb_id,$message){
 }
 
 function sendMessengerMessage($fb_id,$message_to_send,$empty_message){
-    if(!$empty_message){
-        $url = 'https://graph.facebook.com/v2.6/me/messages?access_token='.$messenger_token;
+    //if(!$empty_message){
+        $url = getMessengerURL();
 
         $ch = curl_init($url);
 
-        $jsonData = '{
-            "messaging_type": "RESPONSE",
-            "recipient":{
-                "id":"' . $fb_id . '"
-            }, 
-            "message":{
-                "text":"' . $message_to_send . '"
-            }
-        }';
+        $jsonData = generateJsonForMessenger($fb_id,$message_to_send);
 
         curl_setopt($ch, CURLOPT_VERBOSE, true);
         $fp = fopen(dirname(__FILE__).'/errorlog.txt', 'w');
@@ -58,9 +52,9 @@ function sendMessengerMessage($fb_id,$message_to_send,$empty_message){
         $result = curl_exec($ch);
 
         return true;
-    } else {
-        return false;
-    }
+    //} else {
+    //    return false;
+    //}
 }
 
 ?>
