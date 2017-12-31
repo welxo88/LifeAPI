@@ -1,0 +1,8 @@
+This is an app for private use. Users, who are not allowed separately by creator (Dmitry Poletaev),
+will get automatic reponse for not eligibility.
+
+App is intended to gather information such as food consumption via pictures shared on messenger, 
+activity data from google fit and possible future sources. Data is stored on rented server without 
+access for users, not allowed.
+
+Source at: https://github.com/welxo88/LifeAPI
