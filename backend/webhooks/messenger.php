@@ -19,12 +19,27 @@ $empty_message = empty($input['entry'][0]['messaging'][0]['message']);
 $sender = $input['entry'][0]['messaging'][0]['sender']['id'];
 $message = $input['entry'][0]['messaging'][0]['message']['text'];
 
+$attachment = $input['entry'][0]['messaging'][0]['message']['attachments'];
+if($attachment[0]["type"]==="image"){
+    $image_url = $attachment[0]["payload"]["url"];
+}
+
 if(isAllowedUser($sender)){
-    $message_to_send = " Processing... ";
-    sendMessengerMessage($sender,$message_to_send,$empty_message);
+    sendMessengerMessage($sender,"Processing... ",$empty_message);
+    if(isset($image_url)) {
+        $image = getImage($image_url);
+        $timestamp = date_format(date_create(), 'Ymd-His');
+        $extension = strtok(pathinfo($image_url, PATHINFO_EXTENSION), '?');
+        
+        $fp = fopen('../images/'.$sender.'-'.$timestamp.'.'.$extension,'x');
+        fwrite($fp, $image);
+        fclose($fp);
+        
+        sendMessengerMessage($sender,"image found and saved... ",false);
+    }
 } else {
     $message_to_send = "This bot is for private use. If you know developer personally, contact him to gain access. Your ID for this page is ".$sender;
-    sendMessengerMessage($sender,$message_to_send,$empty_message);
+    sendMessengerMessage($sender,$message_to_send,false);
 }
 
 ?>

@@ -35,7 +35,7 @@ function generateJsonForMessenger($fb_id,$message){
 }
 
 function sendMessengerMessage($fb_id,$message_to_send,$empty_message){
-    //if(!$empty_message){
+    if(!$empty_message){
         $url = getMessengerURL();
 
         $ch = curl_init($url);
@@ -52,9 +52,18 @@ function sendMessengerMessage($fb_id,$message_to_send,$empty_message){
         $result = curl_exec($ch);
 
         return true;
-    //} else {
-    //    return false;
-    //}
+    } else {
+        return false;
+    }
 }
 
+function getImage($url){
+    $ch = curl_init ($url);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_BINARYTRANSFER,1);
+    $raw=curl_exec($ch);
+    curl_close ($ch);
+    return $raw;
+}
 ?>
