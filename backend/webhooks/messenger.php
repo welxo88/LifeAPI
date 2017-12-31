@@ -25,17 +25,27 @@ if($attachment[0]["type"]==="image"){
 }
 
 if(isAllowedUser($sender)){
-    sendMessengerMessage($sender,"Processing... ",$empty_message);
+    sendMessengerMessage($sender,"Hi! ",$empty_message);
     if(isset($image_url)) {
         $image = getImage($image_url);
         $timestamp = date_format(date_create(), 'Ymd-His');
         $extension = strtok(pathinfo($image_url, PATHINFO_EXTENSION), '?');
         
-        $fp = fopen('../images/'.$sender.'-'.$timestamp.'.'.$extension,'x');
-        fwrite($fp, $image);
-        fclose($fp);
+        $image_filename = $sender.'-'.$timestamp.'.'.$extension;
+        //$fp = fopen('../images/'.$image_filename,'x');
+        //fwrite($fp, $image);
+        //fclose($fp);
         
-        sendMessengerMessage($sender,"image found and saved... ",false);
+        //sendMessengerMessage($sender,"image found and saved... ",false);
+
+        sendMessengerMessage($sender,"on break now",false);
+        
+        //$vision_response = getTagsFromGoogleVision($image);
+
+        //$file = 'response.txt';
+        //file_put_contents($file, $vision_response);
+
+        //sendMessengerMessage($sender,"google response: ".substr(addslashes(json_encode($vision_response)),20),false);
     }
 } else {
     $message_to_send = "This bot is for private use. If you know developer personally, contact him to gain access. Your ID for this page is ".$sender;
